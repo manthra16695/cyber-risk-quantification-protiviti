@@ -141,7 +141,7 @@ colors={
  }
 
 style={'backgroundColor': colors['background'], 'color': colors['text'], 'height':'100vh', 'width':'100%', 'height':'100%', 'top':'0px', 'left':'0px'}
-image_filename = r"C:\Users\manth\Desktop\Protiviti_Viz\assets\Protiviti.png" # replace with your own image
+image_filename = r"./assets/Protiviti.png" # replace with your own image
 encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
 app.layout = html.Div([
