@@ -12,8 +12,10 @@ import numpy as np
 import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
 
-
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 
 df = pd.read_csv(r"C:\Users\manth\Desktop\Protiviti_Viz\Data_Files\risk_output.csv")
 # x=df["Annualized Risk ($)"].to_numpy()
