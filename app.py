@@ -18,7 +18,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server
 
-df = pd.read_csv(r"C:\Users\manth\Desktop\Protiviti_Viz\Data_Files\risk_output.csv")
+df = pd.read_csv(r"./Data_Files/risk_output.csv")
 # x=df["Annualized Risk ($)"].to_numpy()
 
 fig = go.Figure()
