@@ -134,7 +134,6 @@ fig4.add_trace(go.Box(y=df["Reputation ($)"],name='Reputation'))
 # Reduce opacity to see both histograms
 # fig.update_traces(opacity=0.75)
 # fig.show()
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 colors={
     'background': '#111111',
     'text': '#7FDBFF'
