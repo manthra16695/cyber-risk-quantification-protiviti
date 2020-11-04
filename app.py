@@ -11,6 +11,7 @@ import plotly.graph_objects as go
 import numpy as np
 import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
+import statistics
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -19,6 +20,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 df = pd.read_csv(r"./Data_Files/risk_output.csv")
+df1=pd.read_csv(r"./Data_Files/Comparison Analysis Outputs.csv")
 # x=df["Annualized Risk ($)"].to_numpy()
 
 fig = go.Figure()
@@ -29,6 +31,7 @@ fig2=px.scatter(x=df['Loss Event Frequency'],y=df['Annualized Risk ($)'],trendli
 
 fig3=go.Figure()
 fig4=go.Figure()
+fig5=go.Figure()
 # np.random.seed(1)
 
 # x = np.random.randn(1000)
@@ -61,6 +64,10 @@ fig4.update_layout(title_text='<b>BoxPlot Comparison of Seconday Responses</b>',
     yaxis_title_text='Loss Due to Risk ($)', # yaxis label
 )
 
+
+fig5.update_layout(title_text='<b>Comparison of Approaches</b>',
+    yaxis_title_text='Number of Simulations', # yaxis label
+)
 # fig5.update_layout(title_text='<b>BoxPlot Comparison of Seconday Responses</b>',
 #     yaxis_title_text='Loss Due to Risk ($)', # yaxis label
 # )
@@ -132,6 +139,77 @@ fig4.add_trace(go.Box(y=df["Secondary Response ($)"],name='Secondary Response'))
 fig4.add_trace(go.Box(y=df["Fines and Judgements ($)"],name='Fines and Judgements'))
 fig4.add_trace(go.Box(y=df["Reputation ($)"],name='Reputation'))
 
+
+
+fig5.add_trace(go.Histogram(x=df1[" approach_a "],name='Approach-A'))
+fig5.add_trace(go.Histogram(x=df1[" approach_b "],name='Approach-B'))
+
+##Mean Calculation
+loss_approach_a=df1[" approach_a "]
+loss_a=statistics.mean(loss_approach_a)
+cnt=len(loss_approach_a)
+
+loss_approach_b=df1[" approach_b "]
+loss_b=statistics.mean(loss_approach_b)
+
+##Median Calculation
+med_loss_a=loss_approach_a.median()
+
+med_loss_b=loss_approach_b.median()
+
+##Mean line Claculation Approach A
+fig5.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=loss_a, y0=0,x1=loss_a,y1=cnt, line=dict(
+        color="blue",
+        width=1,
+    ))
+)
+##Mean line Claculation Approach B
+fig5.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=loss_b, y0=0,x1=loss_b,y1=cnt, line=dict(
+        color="red",
+        width=1,
+    ))
+)
+
+##Median line Claculation Approach A
+fig5.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=med_loss_a, y0=0,x1=med_loss_a,y1=cnt, line=dict(
+        color="blue",
+        width=1,
+    ))
+)
+##Median line Claculation Approach B
+fig5.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=med_loss_b, y0=0,x1=med_loss_b,y1=cnt, line=dict(
+        color="red",
+        width=1,
+    ))
+)
+
+fig5.add_annotation(x=loss_a,y=cnt,
+            text="Mean-A",
+            showarrow=False,
+            yshift=10)
+
+fig5.add_annotation(x=loss_b,y=cnt,
+            text="Mean-B",
+            showarrow=False,
+            yshift=10)
+
+fig5.add_annotation(x=med_loss_a,y=cnt,
+            text="50th",
+            showarrow=True,
+            yshift=10)
+
+fig5.add_annotation(x=med_loss_b,y=cnt,
+            text="50th",
+            showarrow=False,
+            yshift=10)
 # Reduce opacity to see both histograms
 # fig.update_traces(opacity=0.75)
 # fig.show()
@@ -173,6 +251,10 @@ app.layout = html.Div([
     dcc.Graph(
         id='Correlation',
         figure=fig2
+    ),
+      dcc.Graph(
+        id='Compare',
+        figure=fig5
     )
 ], style={'backgroundColor':'black'})
 
