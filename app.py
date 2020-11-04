@@ -31,7 +31,11 @@ fig2=px.scatter(x=df['Loss Event Frequency'],y=df['Annualized Risk ($)'],trendli
 
 fig3=go.Figure()
 fig4=go.Figure()
-fig5=go.Figure()
+# fig5=go.Figure()
+x=df1[" approach_a "]
+hist_data = [x]
+group_labels = ['distplot']
+fig5=ff.create_distplot(hist_data, group_labels)
 # np.random.seed(1)
 
 # x = np.random.randn(1000)
@@ -141,8 +145,8 @@ fig4.add_trace(go.Box(y=df["Reputation ($)"],name='Reputation'))
 
 
 
-fig5.add_trace(go.Histogram(x=df1[" approach_a "],name='Approach-A'))
-fig5.add_trace(go.Histogram(x=df1[" approach_b "],name='Approach-B'))
+# fig5.add_trace(go.Histogram(x=df1[" approach_a "],name='Approach-A'))
+# fig5.add_trace(go.Histogram(x=df1[" approach_b "],name='Approach-B'))
 
 ##Mean Calculation
 loss_approach_a=df1[" approach_a "]
@@ -192,12 +196,12 @@ fig5.add_shape(
 )
 
 fig5.add_annotation(x=loss_a,y=cnt,
-            text="Mean-A",
+            text="       Mean-A",
             showarrow=False,
             yshift=10)
 
 fig5.add_annotation(x=loss_b,y=cnt,
-            text="Mean-B",
+            text="       Mean-B",
             showarrow=False,
             yshift=10)
 
