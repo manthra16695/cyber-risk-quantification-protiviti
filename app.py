@@ -31,19 +31,7 @@ fig2=px.scatter(x=df['Loss Event Frequency'],y=df['Annualized Risk ($)'],trendli
 
 fig3=go.Figure()
 fig4=go.Figure()
-# fig5=go.Figure()
-x=df1[" approach_a "]
-hist_data = [x]
-group_labels = ['distplot']
-fig5=ff.create_distplot(hist_data, group_labels)
-# np.random.seed(1)
-
-# x = np.random.randn(1000)
-# hist_data = [x]
-
-# group_labels = ['distplot'] # name of the dataset
-
-# fig5 = ff.create_distplot([df['Annualized Risk ($)']], group_labels,bin_size=0.2,curve_type='normal')
+fig5=go.Figure()
 
 
 
@@ -72,9 +60,9 @@ fig4.update_layout(title_text='<b>BoxPlot Comparison of Seconday Responses</b>',
 fig5.update_layout(title_text='<b>Comparison of Approaches</b>',
     yaxis_title_text='Number of Simulations', # yaxis label
 )
-# fig5.update_layout(title_text='<b>BoxPlot Comparison of Seconday Responses</b>',
-#     yaxis_title_text='Loss Due to Risk ($)', # yaxis label
-# )
+fig5.update_layout(title_text='<b>BoxPlot Comparison of Seconday Responses</b>',
+    yaxis_title_text='Loss Due to Risk ($)', # yaxis label
+)
 
 fig.add_trace(go.Histogram(x=df['Annualized Risk ($)']))
 
@@ -145,8 +133,8 @@ fig4.add_trace(go.Box(y=df["Reputation ($)"],name='Reputation'))
 
 
 
-# fig5.add_trace(go.Histogram(x=df1[" approach_a "],name='Approach-A'))
-# fig5.add_trace(go.Histogram(x=df1[" approach_b "],name='Approach-B'))
+fig5.add_trace(go.Histogram(x=df1[" approach_a "],name='Approach-A'))
+fig5.add_trace(go.Histogram(x=df1[" approach_b "],name='Approach-B'))
 
 ##Mean Calculation
 loss_approach_a=df1[" approach_a "]
@@ -232,10 +220,10 @@ app.layout = html.Div([
         id='Annualized_Risk Distribution',
         figure=fig
     ),
-    #    dcc.Graph(
-    #     id='Distributio',
-    #     figure=fig5
-    # ),
+       dcc.Graph(
+        id='Distributio',
+        figure=fig5
+    ),
        dcc.Graph(
         id='Annualized_Risk',
         figure=fig0
