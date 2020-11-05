@@ -19,10 +19,11 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server
 
+##Reading the datasets
 df = pd.read_csv(r"./Data_Files/risk_output.csv")
 df1=pd.read_csv(r"./Data_Files/Comparison Analysis Outputs.csv")
 
-
+##Defining Figures using Graph Objects
 fig = go.Figure()
 fig0=go.Figure()
 fig1 = make_subplots()
@@ -33,7 +34,7 @@ fig4=go.Figure()
 fig5=px.scatter(x=df['Loss Event Frequency'],y=df['Annualized Risk ($)'],trendline='ols',trendline_color_override="red")
 
 
-
+##Defining the Layouts and Axis Labels
 
 fig.update_layout(title_text='<b>How Much Risk Do We have ?</b>',xaxis_title_text='Annualized Risk ($)', # xaxis label
     yaxis_title_text='Number of Simulations')
@@ -53,9 +54,6 @@ fig3.update_layout(title_text='<b>Secondary Response Comparisons</b>',xaxis_titl
     yaxis_title_text='Number of Simulations', # yaxis label
 )
 
-
-
-
 fig4.update_layout(title_text='<b>Histogram Comparison of Seconday Responses</b>',xaxis_title_text='Loss Due to Risk ($)',
     yaxis_title_text='Number of Simulations', # yaxis label
 )
@@ -65,9 +63,11 @@ fig5.update_layout(title_text='<b>Correlation Between Loss Frequency and Annuali
 )
 
 
+##Plotting the Objects
+##Fig Begins
 fig.add_trace(go.Histogram(x=df['Annualized Risk ($)']))
 
-##Mean and Percentile Calculation
+##Mean and Percentile Calculation for Stick Lines
 Annualized_loss=df['Annualized Risk ($)']
 loss_avg=statistics.mean(Annualized_loss)
 dflen=len(Annualized_loss) ## For Y axis co-ordinate
@@ -78,8 +78,7 @@ loss_50th=Annualized_loss.median()
 loss_10th=Annualized_loss.quantile(0.10)
 loss_90th=Annualized_loss.quantile(0.90)
 
-
-
+##Plotting the Percentile Sticks using calculated Co-ordinates
 fig.add_shape(
         go.layout.Shape(type='line', xref='x',
                         x0=loss_avg, y0=0,x1=loss_avg,y1=650, line=dict(
@@ -125,29 +124,13 @@ fig.add_annotation(x=loss_90th,y=650,
             showarrow=False,
             yshift=10)
 
+##fig Ends
 
+##fig0 Begins
 fig0.add_trace(go.Histogram(x=df1[" approach_a "],name='Approach-A'))
 fig0.add_trace(go.Histogram(x=df1[" approach_b "],name='Approach-B'))
 
-
-fig1.add_trace(go.Bar(x=["Primary Response ($)","Annualized Risk","Reputation","Secondary Response","Fines and Judgements"],y=[df["Primary Response ($)"].median(),df["Annualized Risk ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median()  ],marker_color='rgb(55, 83, 109)',text=[df["Primary Response ($)"].median(),df["Annualized Risk ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median() ],textposition='auto'),
-              row=1, col=1)
-
-
-fig2.add_trace(go.Box(y=df["Annualized Risk ($)"],name='Annualized Risk'))
-fig2.add_trace(go.Box(y=df["Primary Response ($)"],name='Primary Response'))
-
-fig3.add_trace(go.Box(y=df["Secondary Response ($)"],name='Secondary Response'))
-fig3.add_trace(go.Box(y=df["Fines and Judgements ($)"],name='Fines and Judgements'))
-fig3.add_trace(go.Box(y=df["Reputation ($)"],name='Reputation'))
-
-fig4.add_trace(go.Histogram(x=df['Secondary Response ($)'], name='Secondary Response'))
-fig4.add_trace(go.Histogram(x=df['Fines and Judgements ($)'], name='Fines and Judgements'))
-fig4.add_trace(go.Histogram(x=df['Reputation ($)'], name='Reputation'))
-
-
-
-##Mean Calculation
+##Mean Calculation for Fig 0
 loss_approach_a=df1[" approach_a "]
 loss_a=statistics.mean(loss_approach_a)
 cnt=len(loss_approach_a)
@@ -155,7 +138,7 @@ cnt=len(loss_approach_a)
 loss_approach_b=df1[" approach_b "]
 loss_b=statistics.mean(loss_approach_b)
 
-##Median Calculation
+##Median Calculation for Fig 0
 med_loss_a=loss_approach_a.median()
 
 med_loss_b=loss_approach_b.median()
@@ -213,6 +196,31 @@ fig0.add_annotation(x=med_loss_b,y=cnt,
             text="50th",
             showarrow=False,
             yshift=10)
+
+
+##fig0 Ends
+##fig1 Begins
+fig1.add_trace(go.Bar(x=["Primary Response ($)","Annualized Risk","Reputation","Secondary Response","Fines and Judgements"],y=[df["Primary Response ($)"].median(),df["Annualized Risk ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median()  ],marker_color='rgb(55, 83, 109)',text=[df["Primary Response ($)"].median(),df["Annualized Risk ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median() ],textposition='auto'),
+              row=1, col=1)
+
+##fig1 Ends
+##fig2 Begins
+fig2.add_trace(go.Box(y=df["Annualized Risk ($)"],name='Annualized Risk'))
+fig2.add_trace(go.Box(y=df["Primary Response ($)"],name='Primary Response'))
+##fig2 Ends
+##fig3 Begins
+fig3.add_trace(go.Box(y=df["Secondary Response ($)"],name='Secondary Response'))
+fig3.add_trace(go.Box(y=df["Fines and Judgements ($)"],name='Fines and Judgements'))
+fig3.add_trace(go.Box(y=df["Reputation ($)"],name='Reputation'))
+##fig3 Ends
+
+##fig4 Begins
+fig4.add_trace(go.Histogram(x=df['Secondary Response ($)'], name='Secondary Response'))
+fig4.add_trace(go.Histogram(x=df['Fines and Judgements ($)'], name='Fines and Judgements'))
+fig4.add_trace(go.Histogram(x=df['Reputation ($)'], name='Reputation'))
+##fig4 Ends
+
+
 # Reduce opacity to see both histograms
 # fig.update_traces(opacity=0.75)
 # fig.show()
