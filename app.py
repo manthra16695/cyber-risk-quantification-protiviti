@@ -123,12 +123,29 @@ fig.add_annotation(x=loss_90th,y=650,
             text="90th Percentile",
             showarrow=False,
             yshift=10)
+fig.add_annotation(x=140000,y=650,
+            text="90 th - "+str(loss_90th)+"$",
+            showarrow=False,
+            yshift=10)
+fig.add_annotation(x=140000,y=600,
+            text="Avg - "+str(loss_avg)+"$",
+            showarrow=False,
+            yshift=10)
+fig.add_annotation(x=140000,y=550,
+            text="50 th - " +str(loss_50th)+"$",
+            showarrow=False,
+            yshift=10)
+fig.add_annotation(x=140000,y=500,
+            text="10 th - "+str(loss_10th)+"$",
+            showarrow=False,
+            yshift=10)
 
 ##fig Ends
 
 ##fig0 Begins
 fig0.add_trace(go.Histogram(x=df1[" approach_a "],name='Approach-A'))
 fig0.add_trace(go.Histogram(x=df1[" approach_b "],name='Approach-B'))
+
 
 ##Mean Calculation for Fig 0
 loss_approach_a=df1[" approach_a "]
@@ -197,6 +214,25 @@ fig0.add_annotation(x=med_loss_b,y=cnt,
             showarrow=False,
             yshift=10)
 
+fig0.add_annotation(x=12000000,y=cnt,
+            text="Average A - "+str(loss_10th)+"$",
+            showarrow=False,
+            yshift=10)
+
+fig0.add_annotation(x=12000000,y=cnt-500,
+            text="Average B - "+str(loss_b)+"$",
+            showarrow=False,
+            yshift=10)
+
+fig0.add_annotation(x=12000000,y=cnt-1000,
+            text="50 th % A - "+str(med_loss_a)+"$",
+            showarrow=False,
+            yshift=10)
+
+fig0.add_annotation(x=12000000,y=cnt-1500,
+            text="50 th % B - "+str(med_loss_b)+"$",
+            showarrow=False,
+            yshift=10)
 
 ##fig0 Ends
 ##fig1 Begins
@@ -239,6 +275,7 @@ app.layout = html.Div([
         id='Annualized_Risk Distribution',
         figure=fig
     ),
+
        dcc.Graph(
         id='Approach',
         figure=fig0
@@ -264,7 +301,7 @@ app.layout = html.Div([
         figure=fig5
     ),
 
-], style={'backgroundColor':'black'})
+], style={'width':'100%',"position":"absolute",'backgroundColor':'black'})
 
 
 if __name__ == '__main__':
