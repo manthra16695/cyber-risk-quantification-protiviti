@@ -29,15 +29,16 @@ fig0=go.Figure()
 fig1 = make_subplots()
 fig2 = go.Figure()
 
-fig3=go.Figure()
+fig3=go.Figure()    
 fig4=go.Figure()
 fig5=px.scatter(x=df['Loss Event Frequency'],y=df['Annualized Risk ($)'],trendline='ols',trendline_color_override="red")
-
+fig6=px.histogram(x=df1[" approach_a "])
+fig7=px.histogram(x=df1[" approach_b "])
 
 ##Defining the Layouts and Axis Labels
 
 fig.update_layout(title_text='<b>How Much Risk Do We have ?</b>',xaxis_title_text='Annualized Risk ($)', # xaxis label
-    yaxis_title_text='Number of Simulations')
+    yaxis_title_text='Number of Occurences')
 
 fig0.update_layout(title_text='<b>Comparison of Approaches</b>',
     yaxis_title_text='Loss Due to Risk ($)', # yaxis label
@@ -51,17 +52,24 @@ fig2.update_layout(title_text='<b>BoxPlot Comparison of Annualized Loss and Prim
 )
 
 fig3.update_layout(title_text='<b>Secondary Response Comparisons</b>',xaxis_title_text='Dollar Value ($)', # xaxis label
-    yaxis_title_text='Number of Simulations', # yaxis label
+    yaxis_title_text='Number of Occurences', # yaxis label
 )
 
 fig4.update_layout(title_text='<b>Histogram Comparison of Seconday Responses</b>',xaxis_title_text='Loss Due to Risk ($)',
-    yaxis_title_text='Number of Simulations', # yaxis label
+    yaxis_title_text='Number of Occurences', # yaxis label
 )
 
 fig5.update_layout(title_text='<b>Correlation Between Loss Frequency and Annualized Loss</b>',xaxis_title_text='Loss Event Frequency', # xaxis label
     yaxis_title_text='Annualized Risk ($)', # yaxis label
 )
 
+fig6.update_layout(title_text='<b>Approach A Distribution</b>',xaxis_title_text='Loss Value ($)', # xaxis label
+    yaxis_title_text='Number of Occurences', # yaxis label
+)
+
+fig7.update_layout(title_text='<b>Approach B Distribution</b>',xaxis_title_text='Loss Value ($)', # xaxis label
+    yaxis_title_text='Number of Occurences', # yaxis label
+)
 
 ##Plotting the Objects
 ##Fig Begins
@@ -300,8 +308,16 @@ app.layout = html.Div([
         id='Correlation',
         figure=fig5
     ),
+       dcc.Graph(
+        id='Approacha',
+        figure=fig6
+    ),
 
-], style={'width':'100%',"position":"absolute",'backgroundColor':'black'})
+       dcc.Graph(
+        id='Approachb',
+        figure=fig7
+    ),
+], style={'width':'100%',"position":"absolute"})
 
 
 if __name__ == '__main__':
