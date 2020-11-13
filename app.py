@@ -12,6 +12,14 @@ import numpy as np
 import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
 import statistics
+# Import the libraries
+import plotly.figure_factory as ff
+from plotly.offline import iplot
+
+#imports
+
+import plotly.graph_objs as go
+from plotly.offline import download_plotlyjs, plot, iplot
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -23,6 +31,75 @@ server = app.server
 df = pd.read_csv(r"./Data_Files/risk_output.csv")
 df1=pd.read_csv(r"./Data_Files/Comparison Analysis Outputs.csv")
 
+
+
+binned = np.histogram([df1[" approach_a "]], bins=25)
+plot_y = (np.cumsum(binned[0])/5000)*100
+
+# Line
+trace1 = go.Scatter(
+    x=binned[1],
+    y=plot_y,
+    mode='lines',
+    name="Cumulative Dist-A",
+    hoverinfo='all',
+    # line=dict(color = 'rgb(1255, 0, 0)'
+    )
+
+# go.Histogram(x=df1[" approach_a "], cumulative_enabled=True,histnorm='percent',name='Cumulative Freq Plot'
+
+trace2 = go.Histogram(
+    x=df1[" approach_a "],histnorm='percent',name='Approach_A'
+   
+    )
+
+data = [trace1,trace2]
+
+
+
+# Make figure
+# fig11 = dict(data=data, layout=layout)
+fig_A= go.Figure()
+fig_A.add_trace(trace1)
+fig_A.add_trace(trace2)
+
+
+# # Plot
+# iplot(fig)
+##fig 11
+
+
+# Some sample data
+
+binned = np.histogram([df1[" approach_b "]], bins=25)
+plot_y = (np.cumsum(binned[0])/5000)*100
+
+# Line
+trace1 = go.Scatter(
+    x=binned[1],
+    y=plot_y,
+    mode='lines',
+    name="Cumulative Dist-B",
+    hoverinfo='all',
+    # line=dict(color = 'rgb(1255, 0, 0)'
+    )
+
+# go.Histogram(x=df1[" approach_a "], cumulative_enabled=True,histnorm='percent',name='Cumulative Freq Plot'
+
+trace2 = go.Histogram(
+    x=df1[" approach_b "],histnorm='percent',name='Approach_B'
+   
+    )
+
+data = [trace1,trace2]
+
+
+# Make figure
+fig_B= go.Figure()
+fig_B.add_trace(trace1)
+fig_B.add_trace(trace2)
+
+
 ##Defining Figures using Graph Objects
 fig = go.Figure()
 fig0=go.Figure()
@@ -32,16 +109,22 @@ fig2 = go.Figure()
 fig3=go.Figure()    
 fig4=go.Figure()
 fig5=px.scatter(x=df['Loss Event Frequency'],y=df['Annualized Risk ($)'],trendline='ols',trendline_color_override="red")
-fig6=px.histogram(x=df1[" approach_a "])
-fig7=px.histogram(x=df1[" approach_b "])
+fig6=go.Figure()
+fig7=go.Figure()
+
+
+
+# fig8=ff.create_distplot(hist_data, group_labels=['distplot'],bin_size=10)
 
 ##Defining the Layouts and Axis Labels
 
 fig.update_layout(title_text='<b>How Much Risk Do We have ?</b>',xaxis_title_text='Annualized Risk ($)', # xaxis label
-    yaxis_title_text='Number of Occurences')
+    yaxis_title_text='Number of Occurences'
+     ,plot_bgcolor='white'
+    )
 
-fig0.update_layout(title_text='<b>Comparison of Approaches</b>',
-    yaxis_title_text='Loss Due to Risk ($)', # yaxis label
+fig0.update_layout(title_text='<b>Have We Reduced Risk ?</b>',
+    yaxis_title_text='Probability %', # yaxis label
 )
 
 fig1.update_layout(title_text='<b>What are our Top Risks?</b>',xaxis_title_text='Risk Types', # xaxis label
@@ -64,12 +147,39 @@ fig5.update_layout(title_text='<b>Correlation Between Loss Frequency and Annuali
 )
 
 fig6.update_layout(title_text='<b>Approach A Distribution</b>',xaxis_title_text='Loss Value ($)', # xaxis label
-    yaxis_title_text='Number of Occurences', # yaxis label
+    yaxis_title_text='Probability %', # yaxis label
 )
 
 fig7.update_layout(title_text='<b>Approach B Distribution</b>',xaxis_title_text='Loss Value ($)', # xaxis label
-    yaxis_title_text='Number of Occurences', # yaxis label
+    yaxis_title_text='Probability %', # yaxis label
 )
+fig_A.update_layout(
+    {
+'plot_bgcolor': 'white',
+'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+},
+# plot_bgcolor='gray'
+title={
+        'text': "Histogram and Cumulative Probability for Approach A",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'},xaxis_title_text='Annualized Risk ($)', # xaxis label
+    yaxis_title_text='Probability (%)',)
+
+fig_B.update_layout(
+    {
+'plot_bgcolor': 'white',
+'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+},
+# plot_bgcolor='gray'
+title={
+        'text': "Histogram and Cumulative Probability for Approach B",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'},xaxis_title_text='Annualized Risk ($)', # xaxis label
+    yaxis_title_text='Probability (%)',)
 
 ##Plotting the Objects
 ##Fig Begins
@@ -151,27 +261,27 @@ fig.add_annotation(x=140000,y=500,
 ##fig Ends
 
 ##fig0 Begins
-fig0.add_trace(go.Histogram(x=df1[" approach_a "],name='Approach-A'))
-fig0.add_trace(go.Histogram(x=df1[" approach_b "],name='Approach-B'))
+fig0.add_trace(go.Histogram(x=df1[" approach_a "],histnorm='percent',name='Approach-A'))
+fig0.add_trace(go.Histogram(x=df1[" approach_b "],histnorm='percent',name='Approach-B'))
 
 
 ##Mean Calculation for Fig 0
 loss_approach_a=df1[" approach_a "]
-loss_a=statistics.mean(loss_approach_a)
+loss_a=statistics.median(loss_approach_a)
 cnt=len(loss_approach_a)
 
 loss_approach_b=df1[" approach_b "]
-loss_b=statistics.mean(loss_approach_b)
+loss_b=statistics.median(loss_approach_b)
 
 ##Median Calculation for Fig 0
-med_loss_a=loss_approach_a.median()
+med_loss_a=loss_approach_a.quantile(0.9)
 
-med_loss_b=loss_approach_b.median()
+med_loss_b=loss_approach_b.quantile(0.9)
 
 ##Mean line Addition Approach A
 fig0.add_shape(
         go.layout.Shape(type='line', xref='x',
-                        x0=loss_a, y0=0,x1=loss_a,y1=cnt, line=dict(
+                        x0=loss_a, y0=0,x1=loss_a,y1=80, line=dict(
         color="blue",
         width=1,
     ))
@@ -179,7 +289,7 @@ fig0.add_shape(
 ##Mean line Addition Approach B
 fig0.add_shape(
         go.layout.Shape(type='line', xref='x',
-                        x0=loss_b, y0=0,x1=loss_b,y1=cnt, line=dict(
+                        x0=loss_b, y0=0,x1=loss_b,y1=80, line=dict(
         color="red",
         width=1,
     ))
@@ -188,7 +298,7 @@ fig0.add_shape(
 ##Median line Claculation Approach A
 fig0.add_shape(
         go.layout.Shape(type='line', xref='x',
-                        x0=med_loss_a, y0=0,x1=med_loss_a,y1=cnt, line=dict(
+                        x0=med_loss_a, y0=0,x1=med_loss_a,y1=80, line=dict(
         color="blue",
         width=1,
     ))
@@ -196,48 +306,48 @@ fig0.add_shape(
 ##Median line Claculation Approach B
 fig0.add_shape(
         go.layout.Shape(type='line', xref='x',
-                        x0=med_loss_b, y0=0,x1=med_loss_b,y1=cnt, line=dict(
+                        x0=med_loss_b, y0=0,x1=med_loss_b,y1=80, line=dict(
         color="red",
         width=1,
     ))
 )
 
-fig0.add_annotation(x=loss_a,y=cnt,
-            text="       Mean-A",
+fig0.add_annotation(x=loss_a,y=80,
+            text="50 th-A",
             showarrow=False,
             yshift=10)
 
-fig0.add_annotation(x=loss_b,y=cnt,
-            text="       Mean-B",
-            showarrow=False,
-            yshift=10)
-
-fig0.add_annotation(x=med_loss_a,y=cnt,
-            text="50th",
+fig0.add_annotation(x=loss_b,y=80,
+            text="50th-B",
             showarrow=True,
             yshift=10)
 
-fig0.add_annotation(x=med_loss_b,y=cnt,
-            text="50th",
-            showarrow=False,
+fig0.add_annotation(x=med_loss_a,y=80,
+            text="90th - A",
+            showarrow=True,
             yshift=10)
 
-fig0.add_annotation(x=12000000,y=cnt,
+fig0.add_annotation(x=med_loss_b,y=80,
+            text="90th - B",
+            showarrow=True,
+            yshift=10)
+
+fig0.add_annotation(x=12000000,y=100,
             text="Average A - "+str(loss_10th)+"$",
             showarrow=False,
             yshift=10)
 
-fig0.add_annotation(x=12000000,y=cnt-500,
+fig0.add_annotation(x=12000000,y=100-20,
             text="Average B - "+str(loss_b)+"$",
             showarrow=False,
             yshift=10)
 
-fig0.add_annotation(x=12000000,y=cnt-1000,
+fig0.add_annotation(x=12000000,y=100-30,
             text="50 th % A - "+str(med_loss_a)+"$",
             showarrow=False,
             yshift=10)
 
-fig0.add_annotation(x=12000000,y=cnt-1500,
+fig0.add_annotation(x=12000000,y=100-40,
             text="50 th % B - "+str(med_loss_b)+"$",
             showarrow=False,
             yshift=10)
@@ -264,6 +374,95 @@ fig4.add_trace(go.Histogram(x=df['Fines and Judgements ($)'], name='Fines and Ju
 fig4.add_trace(go.Histogram(x=df['Reputation ($)'], name='Reputation'))
 ##fig4 Ends
 
+                                     
+##Median line Claculation Approach A
+fig_A.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=med_loss_a, y0=0,x1=med_loss_a,y1=90, line=dict(
+        color="blue",
+        width=1,
+    ))
+)
+fig_A.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=loss_a, y0=0,x1=loss_a,y1=90, line=dict(
+        color="blue",
+        width=1,
+    ))
+)
+##Median line Claculation Approach B
+fig_B.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=med_loss_b, y0=0,x1=med_loss_b,y1=90, line=dict(
+        color="red",
+        width=1,
+    ))
+)
+fig_B.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=loss_b, y0=0,x1=loss_b,y1=90, line=dict(
+        color="red",
+        width=1,
+    ))
+)
+fig_A.add_annotation(x=med_loss_a,y=90,
+            text="90th Percentile",
+            showarrow=True,
+            yshift=10)
+fig_A.add_annotation(x=3500000,y=80,
+            text="There is a 70% Chance that the expected loss would be less than 5,67,000 $",
+            showarrow=False,
+            yshift=10,font=dict(
+            family="Courier New, monospace",
+            size=16,
+            color="#ffffff"
+            ),
+        align="center",
+        arrowhead=2,
+        arrowsize=1,
+        arrowwidth=2,
+        arrowcolor="#636363",
+        ax=20,
+        ay=-30,
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="#ff7f0e",
+        opacity=0.8)
+fig_B.add_annotation(x=12000000,y=80,
+            text="There is a 77.6 % Chance that the expected loss would be 0 $",
+            showarrow=False,
+            yshift=10,font=dict(
+            family="Courier New, monospace",
+            size=16,
+            color="#ffffff"
+            ),
+        align="center",
+        arrowhead=2,
+        arrowsize=1,
+        arrowwidth=2,
+        arrowcolor="#636363",
+        ax=20,
+        ay=-30,
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="#ff7f0e",
+        opacity=0.8)
+        
+fig_B.add_annotation(x=med_loss_b,y=90,
+            text="90th Percentile",
+            showarrow=True,
+            yshift=10)
+
+fig_A.add_annotation(x=loss_a,y=90,
+            text="50th Percentile",
+            showarrow=True,
+            yshift=10)
+fig_B.add_annotation(x=loss_b,y=90,
+            text="50th Percentile",
+            showarrow=True,
+            yshift=10)
 
 # Reduce opacity to see both histograms
 # fig.update_traces(opacity=0.75)
@@ -279,9 +478,18 @@ encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
 app.layout = html.Div([
      html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode())),
-    dcc.Graph(
+        dcc.Graph(
         id='Annualized_Risk Distribution',
         figure=fig
+    ), 
+        dcc.Graph(
+        id='Approacha',
+        figure=fig_A
+    ),
+
+       dcc.Graph(
+        id='Approachb',
+        figure=fig_B
     ),
 
        dcc.Graph(
@@ -307,15 +515,6 @@ app.layout = html.Div([
     dcc.Graph(
         id='Correlation',
         figure=fig5
-    ),
-       dcc.Graph(
-        id='Approacha',
-        figure=fig6
-    ),
-
-       dcc.Graph(
-        id='Approachb',
-        figure=fig7
     ),
 ], style={'width':'100%',"position":"absolute"})
 
