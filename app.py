@@ -129,8 +129,13 @@ fig.update_layout(title_text='<b>How Much Risk Do We have ?</b>',xaxis_title_tex
      ,plot_bgcolor='white'
     )
 
-fig0.update_layout(title_text='<b>Have We Reduced Risk ?</b>',
-    yaxis_title_text='Probability %', # yaxis label
+fig0.update_layout(title={
+        'text': "Have We Reduced Risk ?",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'},
+    yaxis_title_text='Probability %',plot_bgcolor='white'
 )
 
 fig1.update_layout(title_text='<b>What are our Top Risks?</b>',xaxis_title_text='Risk Types', # xaxis label
@@ -409,6 +414,27 @@ fig0.add_annotation(x=12000000,y=100-40,
             text="50 th % B - "+str(med_loss_b)+"$",
             showarrow=False,
             yshift=10)
+
+fig0.add_annotation(x=12000000,y=90,
+            text="By Choosing Approach B we could save upto 47000 $",
+            showarrow=False,
+            yshift=10,font=dict(
+            family="Courier New, monospace",
+            size=16,
+            color="#ffffff"
+            ),
+        align="center",
+        arrowhead=2,
+        arrowsize=1,
+        arrowwidth=2,
+        arrowcolor="#636363",
+        ax=20,
+        ay=-30,
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="#ff7f0e",
+        opacity=0.8)
 
 ##fig0 Ends
 ##fig1 Begins
