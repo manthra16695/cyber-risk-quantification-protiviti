@@ -395,28 +395,28 @@ fig0.add_annotation(x=med_loss_b,y=80,
             showarrow=True,
             yshift=10)
 
-fig0.add_annotation(x=12000000,y=100,
-            text="Average A - "+str(loss_10th)+"$",
-            showarrow=False,
-            yshift=10)
+# fig0.add_annotation(x=12000000,y=100,
+#             text="Average A - "+str(loss_10th)+"$",
+#             showarrow=False,
+#             yshift=10)
 
-fig0.add_annotation(x=12000000,y=100-20,
-            text="Average B - "+str(loss_b)+"$",
-            showarrow=False,
-            yshift=10)
+# fig0.add_annotation(x=12000000,y=100-20,
+#             text="Average B - "+str(loss_b)+"$",
+#             showarrow=False,
+#             yshift=10)
 
-fig0.add_annotation(x=12000000,y=100-30,
-            text="50 th % A - "+str(med_loss_a)+"$",
-            showarrow=False,
-            yshift=10)
+# fig0.add_annotation(x=12000000,y=100-30,
+#             text="50 th % A - "+str(med_loss_a)+"$",
+#             showarrow=False,
+#             yshift=10)
 
-fig0.add_annotation(x=12000000,y=100-40,
-            text="50 th % B - "+str(med_loss_b)+"$",
-            showarrow=False,
-            yshift=10)
+# fig0.add_annotation(x=12000000,y=100-40,
+#             text="50 th % B - "+str(med_loss_b)+"$",
+#             showarrow=False,
+#             yshift=10)
 
 fig0.add_annotation(x=12000000,y=90,
-            text="By Choosing Approach B we could save upto 47000 $",
+            text="By Choosing Approach B we could save upto 500,000 $ (approx)",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
