@@ -242,6 +242,48 @@ title={
     yaxis_title_text='Loss Value ($)',)
 
 
+###Plotting the DataTable
+headerColor = 'grey'
+rowEvenColor = 'lightgrey'
+rowOddColor = 'white'
+
+fig_table = go.Figure(data=[go.Table(
+  header=dict(
+    values=['<b>Approach_A</b>','<b>Minimum</b>','<b>Most Likely</b>','<b>Average</b>','<b>Maximum</b>'],
+    line_color='darkslategray',
+    fill_color=headerColor,
+    align=['left','center'],
+    font=dict(color='white', size=12)
+  ),
+  cells=dict(
+    values=[
+      ['Loss Events Per Year', 'Loss Magnitude Per Event', '<b>Approach_B</b>', 'Loss Events Per Year', 'Loss Magnitude Per Event'],
+      [0, '$'+str(df1[" approach_a "].min()),'' , 0, '$'+str(df1[" approach_b "].min())],
+      [0, '$'+str(int(df1[" approach_a "].mode())),'' , 0, '$'+str(int(df1[" approach_b "].mode()))],
+      [0, '$'+str(int(df1[" approach_a "].mean())) ,'' , 0, '$'+str(int(df1[" approach_b "].mean()))],
+      [0, '$'+str(int(df1[" approach_a "].max())),'' , 0, '$'+str(int(df1[" approach_b "].max()))]],
+    line_color='darkslategray',
+    # 2-D list of colors for alternating rows
+    fill_color = [[rowOddColor,rowEvenColor,rowOddColor, rowEvenColor,rowOddColor]*5],
+    align = ['left', 'center'],
+    font = dict(color = 'darkslategray', size = 11)
+    ))
+])
+
+fig_table.update_layout(
+    {
+'plot_bgcolor': 'white',
+'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+},
+# plot_bgcolor='gray'
+title={
+        'text': "Summary of Simulation Results",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'},xaxis_title_text='Annualized Risk ($)', # xaxis label
+    yaxis_title_text='Loss Value ($)',)
+
 ##Plotting the Objects
 ##Fig Begins
 fig.add_trace(go.Histogram(x=df['Annualized Risk ($)']))
@@ -416,7 +458,7 @@ fig0.add_annotation(x=med_loss_b,y=80,
 #             yshift=10)
 
 fig0.add_annotation(x=12000000,y=90,
-            text="By Choosing Approach B we could save upto 500,000 $ (approx)",
+            text="By Choosing Approach B we could save upto 500,000 $ (app)",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
@@ -596,6 +638,10 @@ app.layout = html.Div([
        dcc.Graph(
         id='cost',
         figure=fig_Cost
+    ),
+        dcc.Graph(
+        id='table',
+        figure=fig_table
     ),
        dcc.Graph(
         id='Top_Risks',
