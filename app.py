@@ -42,6 +42,20 @@ loss_50th=Annualized_loss.median()
 loss_10th=Annualized_loss.quantile(0.10)
 loss_90th=Annualized_loss.quantile(0.90)
 
+##Mean Calculation for Fig 0
+loss_approach_a=df1[" approach_a "]
+loss_a=statistics.median(loss_approach_a)
+cnt=len(loss_approach_a)
+
+loss_approach_b=df1[" approach_b "]
+loss_b=statistics.median(loss_approach_b)
+
+##Median Calculation for Fig 0
+med_loss_a=loss_approach_a.quantile(0.9)
+loss_a_10th=loss_approach_a.quantile(0.1)
+
+loss_b_90th=loss_approach_b.quantile(0.9)
+loss_b_10th=loss_approach_b.quantile(0.1)
 
 binned = np.histogram([df1[" approach_a "]], bins=25)
 plot_y = (np.cumsum(binned[0])/5000)*100
@@ -167,11 +181,27 @@ title={
     )
 
 fig0.update_layout(title={
-        'text': "Have We Reduced Risk ?",
+        'text': "Could We Reduce Risk ?",
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
-        'yanchor': 'top'},
+        'yanchor': 'top'},shapes=[
+        # Phase 1 & 2
+        dict(
+            type="rect",
+            # x-reference is assigned to the x-values
+            xref="x",
+            # y-reference is assigned to the plot paper [0,1]
+            yref="paper",
+            x0=med_loss_a,
+            y0=0,
+            x1=loss_b_90th,
+            y1=1,
+            fillcolor="lightgray",
+            opacity=0.5,
+            layer="below",
+            line_width=0,
+        )],
     yaxis_title_text='Probability %',plot_bgcolor='white'
 )
 
@@ -436,20 +466,6 @@ fig0.add_trace(go.Histogram(x=df1[" approach_a "],histnorm='percent',name='Appro
 fig0.add_trace(go.Histogram(x=df1[" approach_b "],histnorm='percent',name='Approach-B'))
 
 
-##Mean Calculation for Fig 0
-loss_approach_a=df1[" approach_a "]
-loss_a=statistics.median(loss_approach_a)
-cnt=len(loss_approach_a)
-
-loss_approach_b=df1[" approach_b "]
-loss_b=statistics.median(loss_approach_b)
-
-##Median Calculation for Fig 0
-med_loss_a=loss_approach_a.quantile(0.9)
-loss_a_10th=loss_approach_a.quantile(0.1)
-
-med_loss_b=loss_approach_b.quantile(0.9)
-loss_b_10th=loss_approach_b.quantile(0.1)
 ##Mean line Addition Approach A
 fig0.add_shape(
         go.layout.Shape(type='line', xref='x',
@@ -478,7 +494,7 @@ fig0.add_shape(
 ##Median line Claculation Approach B
 fig0.add_shape(
         go.layout.Shape(type='line', xref='x',
-                        x0=med_loss_b, y0=0,x1=med_loss_b,y1=80, line=dict(
+                        x0=loss_b_90th, y0=0,x1=loss_b_90th,y1=80, line=dict(
         color="red",
         width=1,
     ))
@@ -499,7 +515,7 @@ fig0.add_annotation(x=med_loss_a,y=80,
             showarrow=True,
             yshift=10)
 
-fig0.add_annotation(x=med_loss_b,y=80,
+fig0.add_annotation(x=loss_b_90th,y=80,
             text="90th - B",
             showarrow=True,
             yshift=10)
@@ -524,8 +540,8 @@ fig0.add_annotation(x=med_loss_b,y=80,
 #             showarrow=False,
 #             yshift=10)
 
-fig0.add_annotation(x=12000000,y=90,
-            text="By Choosing Approach B we could save upto 500,000 $ (app)",
+fig0.add_annotation(x=14000000,y=70,
+            text="Probability of any loss happening with Approach B is very less compared to A",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
@@ -544,6 +560,15 @@ fig0.add_annotation(x=12000000,y=90,
         borderpad=4,
         bgcolor="#ff7f0e",
         opacity=0.8)
+fig0.add_annotation(
+    x=14000000,
+    y=60,
+    text='<b><i>But in Max case (90 th Percentile) the loss due to B could be as high as  '+str("{:,}".format(math.trunc(loss_b_90th)))+" $",
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
+
 
 ##fig0 Ends
 ##fig1 Begins
@@ -595,7 +620,7 @@ fig_A.add_shape(
 ##Median line Claculation Approach B
 fig_B.add_shape(
         go.layout.Shape(type='line', xref='x',
-                        x0=med_loss_b, y0=0,x1=med_loss_b,y1=90, line=dict(
+                        x0=loss_b_90th, y0=0,x1=loss_b_90th,y1=90, line=dict(
         color="black",
         width=1,
     ))
@@ -660,7 +685,7 @@ fig_A.add_annotation(
     arrowhead=2,
 )
 fig_B.add_annotation(x=14000000,y=80,
-             text="80% chance that our loss Exposure would be between " +str("{:,}".format(math.trunc(loss_b_10th)))+" $ and "+str("{:,}".format(math.trunc(med_loss_b)))+" $",
+             text="80% chance that our loss Exposure would be between " +str("{:,}".format(math.trunc(loss_b_10th)))+" $ and "+str("{:,}".format(math.trunc(loss_b_90th)))+" $",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
@@ -682,7 +707,7 @@ fig_B.add_annotation(x=14000000,y=80,
 fig_B.add_annotation(
     x=14000000,
     y=65,
-    text='<b><i>highest probable value would be <i></b>'+str("{:,}".format(math.trunc(med_loss_b)))+' <b><i>$, in worst case it could be as high as </i></b>'+str("{:,}".format(math.trunc(loss_approach_b.max())))+"<b><i>$</i><b>",
+    text='<b><i>highest probable value would be <i></b>'+str("{:,}".format(math.trunc(loss_b_90th)))+' <b><i>$, in worst case it could be as high as </i></b>'+str("{:,}".format(math.trunc(loss_approach_b.max())))+"<b><i>$</i><b>",
     ax=0.5,
     ay=2,
     arrowhead=2,
@@ -695,7 +720,7 @@ fig_B.add_annotation(
     ay=2,
     arrowhead=2,
 )
-fig_B.add_annotation(x=med_loss_b,y=90,
+fig_B.add_annotation(x=loss_b_90th,y=90,
             text="90th Percentile",
             showarrow=True,
             yshift=10)
