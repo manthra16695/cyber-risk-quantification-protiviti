@@ -375,7 +375,7 @@ fig.add_annotation(x=loss_90th,y=650,
             showarrow=False,
             yshift=10)
 fig.add_annotation(x=120000,y=550,
-            text="80% chance that our loss Exposure would be between " +str(math.trunc(loss_10th))+" $ and "+str(math.trunc(loss_90th))+" $",
+            text="80% chance that our loss Exposure would be between " +str("{:,}".format(math.trunc(loss_10th)))+" $ and "+str("{:,}".format(math.trunc(loss_90th)))+" $",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
@@ -399,7 +399,7 @@ fig.add_annotation(x=120000,y=550,
 fig.add_annotation(
     x=120000,
     y=450,
-    text='<b><i>Most Likely Loss Value we could expect is '+str(math.trunc(loss_ML))+' $</i></b>',
+    text='<b><i>Most Likely Loss Value we could expect is '+str("{:,}".format(math.trunc(loss_ML)))+' $</i></b>',
     ax=0.5,
     ay=2,
     arrowhead=2,
@@ -407,7 +407,7 @@ fig.add_annotation(
 fig.add_annotation(
     x=120000,
     y=350,
-    text='<b><i>highest probable value would be <i></b>'+str(math.trunc(loss_90th))+' <b><i>$ in worst case it could be as high  as </i></b>'+str(math.trunc(Annualized_loss.max()))+" <b><i>$</i><b>",
+    text='<b><i>highest probable value would be <i></b>'+str("{:,}".format(math.trunc(loss_90th)))+' <b><i>$, in worst case it could be as high  as </i></b>'+str("{:,}".format(math.trunc(Annualized_loss.max())))+" <b><i>$</i><b>",
     ax=0.5,
     ay=2,
     arrowhead=2,
@@ -584,13 +584,13 @@ fig_A.add_shape(
         width=1,
     ))
 )
-# fig_A.add_shape(
-#         go.layout.Shape(type='line', xref='x',
-#                         x0=loss_a_10th, y0=0,x1=loss_a_10th,y1=90, line=dict(
-#         color="black",
-#         width=1,
-#     ))
-# )
+fig_A.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=loss_a_10th, y0=0,x1=loss_a_10th,y1=90, line=dict(
+        color="black",
+        width=1,
+    ))
+)
 
 ##Median line Claculation Approach B
 fig_B.add_shape(
@@ -611,12 +611,12 @@ fig_A.add_annotation(x=med_loss_a,y=90,
             text="90th Percentile",
             showarrow=True,
             yshift=10)
-# fig_A.add_annotation(x=loss_a_10th,y=90,
-#             text="10th Percentile",
-#             showarrow=True,
-#             yshift=10)
+fig_A.add_annotation(x=loss_a_10th,y=90,
+            text="10th Percentile",
+            showarrow=True,
+            yshift=10)
 fig_A.add_annotation(x=3500000,y=80,
-            text="Probability of losing 5,67,000 $ or lesser is 70%",
+            text="80% chance that our loss Exposure would be between " +str("{:,}".format(math.trunc(loss_a_10th)))+" $ and "+str("{:,}".format(math.trunc(med_loss_a)))+" $",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
@@ -635,6 +635,23 @@ fig_A.add_annotation(x=3500000,y=80,
         borderpad=4,
         bgcolor="#ff7f0e",
         opacity=0.8)
+
+fig_A.add_annotation(
+    x=3500000,
+    y=60,
+    text='<b><i>highest probable value would be <i></b>'+str("{:,}".format(math.trunc(med_loss_a)))+' <b><i>$, in worst case it could be as high  as </i></b>'+str("{:,}".format(math.trunc(loss_approach_a.max())))+" <b><i>$</i><b>",
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
+fig_A.add_annotation(
+    x=3500000,
+    y=40,
+    text='<b><i>There is a 12.72 % chance that the loss would be 0 $ </i><b>',
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
 fig_B.add_annotation(x=12000000,y=80,
             text="There is a 77.6 % Chance that the expected loss would be 0 $",
             showarrow=False,
