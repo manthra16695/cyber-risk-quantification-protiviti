@@ -607,6 +607,13 @@ fig_B.add_shape(
         width=1,
     ))
 )
+fig_B.add_shape(
+        go.layout.Shape(type='line', xref='x',
+                        x0=loss_b_10th, y0=0,x1=loss_b,y1=90, line=dict(
+        color="black",
+        width=1,
+    ))
+)
 fig_A.add_annotation(x=med_loss_a,y=90,
             text="90th Percentile",
             showarrow=True,
@@ -646,14 +653,14 @@ fig_A.add_annotation(
 )
 fig_A.add_annotation(
     x=3500000,
-    y=40,
-    text='<b><i>There is a 12.72 % chance that the loss would be 0 $ </i><b>',
+    y=40,   
+    text='<b><i>There is a '+  str(100*(df1[" approach_a "].isin([0]).sum())/df1[" approach_a "].count())  + '% chance that the loss would be 0 $ </i><b>',
     ax=0.5,
     ay=2,
     arrowhead=2,
 )
-fig_B.add_annotation(x=12000000,y=80,
-            text="There is a 77.6 % Chance that the expected loss would be 0 $",
+fig_B.add_annotation(x=14000000,y=80,
+             text="80% chance that our loss Exposure would be between " +str("{:,}".format(math.trunc(loss_b_10th)))+" $ and "+str("{:,}".format(math.trunc(med_loss_b)))+" $",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
@@ -672,7 +679,22 @@ fig_B.add_annotation(x=12000000,y=80,
         borderpad=4,
         bgcolor="#ff7f0e",
         opacity=0.8)
-        
+fig_B.add_annotation(
+    x=14000000,
+    y=65,
+    text='<b><i>highest probable value would be <i></b>'+str("{:,}".format(math.trunc(med_loss_b)))+' <b><i>$, in worst case it could be as high as </i></b>'+str("{:,}".format(math.trunc(loss_approach_b.max())))+"<b><i>$</i><b>",
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
+fig_B.add_annotation(
+    x=14000000,
+    y=50,   
+    text='<b><i>There is a '+  str(100*(df1[" approach_b "].isin([0]).sum())/df1[" approach_b "].count())  + '% chance that the loss would be 0 $ </i><b>',
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
 fig_B.add_annotation(x=med_loss_b,y=90,
             text="90th Percentile",
             showarrow=True,
@@ -682,8 +704,12 @@ fig_A.add_annotation(x=loss_a,y=90,
             text="50th Percentile",
             showarrow=True,
             yshift=10)
-fig_B.add_annotation(x=loss_b,y=90,
-            text="50th Percentile",
+# fig_B.add_annotation(x=loss_b,y=90,
+#             text="50th Percentile",
+#             showarrow=True,
+#             yshift=10)
+fig_B.add_annotation(x=loss_b_10th,y=90,
+            text="10th Percentile",
             showarrow=True,
             yshift=10)
 
