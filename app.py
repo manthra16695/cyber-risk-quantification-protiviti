@@ -15,7 +15,7 @@ import statistics
 # Import the libraries
 import plotly.figure_factory as ff
 from plotly.offline import iplot
-
+import math
 #imports
 
 import plotly.graph_objs as go
@@ -31,6 +31,16 @@ server = app.server
 df = pd.read_csv(r"./Data_Files/risk_output.csv")
 df1=pd.read_csv(r"./Data_Files/Comparison Analysis Outputs.csv")
 
+##Mean and Percentile Calculation for Stick Lines
+Annualized_loss=df['Annualized Risk ($)']
+loss_ML=statistics.mode(Annualized_loss)
+dflen=len(Annualized_loss) ## For Y axis co-ordinate
+
+
+loss_50th=Annualized_loss.median()
+
+loss_10th=Annualized_loss.quantile(0.10)
+loss_90th=Annualized_loss.quantile(0.90)
 
 
 binned = np.histogram([df1[" approach_a "]], bins=25)
@@ -124,8 +134,35 @@ fig7=go.Figure()
 ##Defining the Layouts and Axis Labels
 
 
-fig.update_layout(title_text='<b>How Much Risk Do We have ?</b>',xaxis_title_text='Annualized Risk ($)', # xaxis label
-    yaxis_title_text='Number of Occurences'
+fig.update_layout(
+    {
+'plot_bgcolor': 'white',
+'paper_bgcolor': 'rgba(0, 0, 0, 0)',
+},
+# plot_bgcolor='gray'
+title={
+        'text': "How much Risk do We Have (Annualized Risk)?",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'},shapes=[
+        # Phase 1 & 2
+        dict(
+            type="rect",
+            # x-reference is assigned to the x-values
+            xref="x",
+            # y-reference is assigned to the plot paper [0,1]
+            yref="paper",
+            x0=loss_10th,
+            y0=0,
+            x1=loss_90th,
+            y1=1,
+            fillcolor="lightgray",
+            opacity=0.5,
+            layer="below",
+            line_width=0,
+        )],xaxis_title_text='Annualized Risk ($)', # xaxis label
+    yaxis_title_text='Simulation Distribution'
      ,plot_bgcolor='white'
     )
 
@@ -187,7 +224,7 @@ title={
             y0=0,
             x1="1363000",
             y1=1,
-            fillcolor="aliceblue",
+            fillcolor="lightgray",
             opacity=0.5,
             layer="below",
             line_width=0,
@@ -210,7 +247,7 @@ fig_B.update_layout(
             y0=0,
             x1="6499999",
             y1=1,
-            fillcolor="aliceblue",
+            fillcolor="lightgray",
             opacity=0.5,
             layer="below",
             line_width=0,
@@ -288,24 +325,16 @@ title={
 ##Fig Begins
 fig.add_trace(go.Histogram(x=df['Annualized Risk ($)']))
 
-##Mean and Percentile Calculation for Stick Lines
-Annualized_loss=df['Annualized Risk ($)']
-loss_avg=statistics.mean(Annualized_loss)
-dflen=len(Annualized_loss) ## For Y axis co-ordinate
 
 
-loss_50th=Annualized_loss.median()
-
-loss_10th=Annualized_loss.quantile(0.10)
-loss_90th=Annualized_loss.quantile(0.90)
 
 ##Plotting the Percentile Sticks using calculated Co-ordinates
 fig.add_shape(
         go.layout.Shape(type='line', xref='x',
-                        x0=loss_avg, y0=0,x1=loss_avg,y1=650, line=dict(
+                        x0=loss_ML, y0=0,x1=loss_ML,y1=650, line=dict(
         color="red",
         width=2
-    ),name='Avg')
+    ))
 )
 fig.add_shape(
         go.layout.Shape(type='line', xref='x',
@@ -337,30 +366,68 @@ fig.add_annotation(x=loss_10th,y=650,
             text="10th Percentile",
             showarrow=False,
             yshift=10)
-fig.add_annotation(x=loss_avg,y=650,
-            text="   Avg",
+fig.add_annotation(x=loss_ML,y=650,
+            text="   ML",
             showarrow=False,
             yshift=10)
 fig.add_annotation(x=loss_90th,y=650,
             text="90th Percentile",
             showarrow=False,
             yshift=10)
-fig.add_annotation(x=140000,y=650,
-            text="90 th - "+str(loss_90th)+"$",
+fig.add_annotation(x=120000,y=550,
+            text="80% chance that our loss Exposure would be between " +str(math.trunc(loss_10th))+" $ and "+str(math.trunc(loss_90th))+" $",
             showarrow=False,
-            yshift=10)
-fig.add_annotation(x=140000,y=600,
-            text="Avg - "+str(loss_avg)+"$",
-            showarrow=False,
-            yshift=10)
-fig.add_annotation(x=140000,y=550,
-            text="50 th - " +str(loss_50th)+"$",
-            showarrow=False,
-            yshift=10)
-fig.add_annotation(x=140000,y=500,
-            text="10 th - "+str(loss_10th)+"$",
-            showarrow=False,
-            yshift=10)
+            yshift=10,font=dict(
+            family="Courier New, monospace",
+            size=16,
+            color="#ffffff"
+            ),
+        align="center",
+        arrowhead=2,
+        arrowsize=1,
+        arrowwidth=2,
+        arrowcolor="#636363",
+        ax=20,
+        ay=-30,
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="#ff7f0e",
+        opacity=0.8)
+        
+        
+fig.add_annotation(
+    x=120000,
+    y=450,
+    text='<b><i>Most Likely Loss Value we could expect is '+str(math.trunc(loss_ML))+' $</i></b>',
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
+fig.add_annotation(
+    x=120000,
+    y=350,
+    text='<b><i>highest probable value would be <i></b>'+str(math.trunc(loss_90th))+' <b><i>$ in worst case it could be as high  as </i></b>'+str(math.trunc(Annualized_loss.max()))+" <b><i>$</i><b>",
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
+# fig.add_annotation(x=140000,y=650,
+#             text="90 th - "+str(loss_90th)+"$",
+#             showarrow=False,
+#             yshift=10)
+# fig.add_annotation(x=140000,y=600,
+#             text="Avg - "+str(loss_avg)+"$",
+#             showarrow=False,
+#             yshift=10)
+# fig.add_annotation(x=140000,y=550,
+#             text="50 th - " +str(loss_50th)+"$",
+#             showarrow=False,
+#             yshift=10)
+# fig.add_annotation(x=140000,y=500,
+#             text="10 th - "+str(loss_10th)+"$",
+#             showarrow=False,
+#             yshift=10)
 
 ##fig Ends
 
