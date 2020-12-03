@@ -220,7 +220,11 @@ fig1.update_layout(title={
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
-        'yanchor': 'top'},xaxis_title_text='Risk Types', # xaxis label
+        'yanchor': 'top'},xaxis=dict(
+          title='Risk Types',
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False # Removes Y-axis grid lines    
+    ), # xaxis label
     yaxis_title_text='Loss Value ($)', # yaxis label
     plot_bgcolor='white'
 )
@@ -269,7 +273,7 @@ fig3.update_layout(title={
         linecolor="#BCCCDC",  # Sets color of Y-axis line
         showgrid=False,  # Removes Y-axis grid lines    
     ),xaxis=dict(
-        title="Dollar Value ($)",  
+         
         linecolor="#BCCCDC",  # Sets color of Y-axis line
         showgrid=False,  # Removes Y-axis grid lines    
     ),
@@ -281,7 +285,11 @@ fig4.update_layout(title={
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
-        'yanchor': 'top'},xaxis_title_text='Loss Due to Risk ($)',
+        'yanchor': 'top'},xaxis=dict(
+          title='Loss Exposure ($)',
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    ),
     yaxis_title_text='Number of Occurences',  plot_bgcolor='white'# yaxis label
 )
 
