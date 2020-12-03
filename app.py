@@ -220,7 +220,7 @@ fig1.update_layout(title={
     yaxis_title_text='Loss Value ($)', # yaxis label
     plot_bgcolor='white'
 )
-fig1.add_annotation(x=3,y=40000,
+fig1.add_annotation(x=2,y=40000,
             text="<b><i>Top Risks and its Expected loss value based on 50th Percentile values</i></b>",
             showarrow=False,
             yshift=10,font=dict(
@@ -241,14 +241,21 @@ fig1.add_annotation(x=3,y=40000,
         bgcolor="#ff7f0e",
         opacity=0.8)
         
-
+fig1.add_annotation(
+    x=2,
+    y=30000,
+    text='<b><i>Reputation Losses Contributes most to the Annualized Risk out of the Secondary Responses</i></b>',
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
 
 # fig2.update_layout(title_text='<b>BoxPlot Comparison of Annualized Loss and Primary Response</b>',
 #     yaxis_title_text='Loss Due to Risk ($)', # yaxis label
 # )
 
 fig3.update_layout(title={
-        'text': 'Secondary Response Comparisons',
+        'text': 'Secondary Response Comparisons (Boxplots)',
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
@@ -265,7 +272,12 @@ fig3.update_layout(title={
     plot_bgcolor='white' # yaxis label
 )
 
-fig4.update_layout(title_text='<b>Histogram Comparison of Seconday Responses</b>',xaxis_title_text='Loss Due to Risk ($)',
+fig4.update_layout(title={
+        'text': 'Secondary Response Comparisons (Histograms)',
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'},xaxis_title_text='Loss Due to Risk ($)',
     yaxis_title_text='Number of Occurences',  plot_bgcolor='white'# yaxis label
 )
 
@@ -621,7 +633,7 @@ fig0.add_annotation(
 
 ##fig0 Ends
 ##fig1 Begins
-fig1.add_trace(go.Bar(x=["Primary Response ($)","Annualized Risk","Reputation","Secondary Response","Fines and Judgements"],y=[df["Primary Response ($)"].median(),df["Annualized Risk ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median()  ],marker_color='rgb(55, 83, 109)',text=[df["Primary Response ($)"].median(),df["Annualized Risk ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median() ],textposition='auto'),
+fig1.add_trace(go.Bar(x=["Primary Response ($)","Reputation","Secondary Response","Fines and Judgements"],y=[df["Primary Response ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median()  ],marker_color='rgb(55, 83, 109)',text=["$"+str("{:,}".format(math.trunc(df["Primary Response ($)"].median()))),"$"+str("{:,}".format(math.trunc(df["Reputation ($)"].median()))),"$"+str("{:,}".format(math.trunc(df["Secondary Response ($)"].median()))) ,"$"+str("{:,}".format(math.trunc(df["Fines and Judgements ($)"].median())))],textposition='auto'),
               row=1, col=1)
 
 
@@ -631,9 +643,45 @@ fig1.add_trace(go.Bar(x=["Primary Response ($)","Annualized Risk","Reputation","
 # fig2.add_trace(go.Box(y=df["Primary Response ($)"],name='Primary Response'))
 ##fig2 Ends
 ##fig3 Begins
+fig3.add_trace(go.Box(y=df["Reputation ($)"],name='Reputation'))
 fig3.add_trace(go.Box(y=df["Secondary Response ($)"],name='Secondary Response'))
 fig3.add_trace(go.Box(y=df["Fines and Judgements ($)"],name='Fines and Judgements'))
-fig3.add_trace(go.Box(y=df["Reputation ($)"],name='Reputation'))
+fig3.add_annotation(x=1.5,y=1750,
+            text="Loss Exposure due to Reputation can range between " +str("{:,}".format(math.trunc(df["Reputation ($)"].quantile(0.10))))+" $ (10th) and "+str("{:,}".format(math.trunc(df["Reputation ($)"].quantile(0.90))))+" $ (90th)",
+            showarrow=False,
+            yshift=10,font=dict(
+            family="Courier New, monospace",
+            size=16,
+            color="#ffffff"
+            ),
+        align="center",
+        arrowhead=2,
+        arrowsize=1,
+        arrowwidth=2,
+        arrowcolor="#636363",
+        ax=20,
+        ay=-30,
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="#ff7f0e",
+        opacity=0.8)
+fig3.add_annotation(
+    x=1.5,
+    y=1500,
+    text='<b><i>Secondary Loss exposure ranges between '+str("{:,}".format(math.trunc(df["Secondary Response ($)"].quantile(0.10))))+" $ and "+str("{:,}".format(math.trunc(df["Secondary Response ($)"].quantile(0.90)))+" $"),
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
+fig3.add_annotation(
+    x=1.5,
+    y=1250,
+    text='<b><i>Fines and Judgements ranges between  '+str("{:,}".format(math.trunc(df["Fines and Judgements ($)"].quantile(0.10))))+" $ and "+str("{:,}".format(math.trunc(df["Fines and Judgements ($)"].quantile(0.90)))+" $"),
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
+)
 ##fig3 Ends
 
 ##fig4 Begins
