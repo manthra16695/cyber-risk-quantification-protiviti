@@ -207,7 +207,11 @@ fig0.update_layout(title={
             opacity=0.5,
             layer="below",
             line_width=0,
-        )],
+        )],xaxis=dict(
+        title="Annualized Risk ($)",  
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    ),
     yaxis_title_text='Probability %',plot_bgcolor='white'
 )
 
@@ -319,7 +323,12 @@ title={
             opacity=0.5,
             layer="below",
             line_width=0,
-        )],xaxis_title_text='Annualized Risk ($)', # xaxis label
+        )],
+        xaxis=dict(
+        title="Annualized Risk ($)",  
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    ),
     yaxis_title_text='Probability (%)')
 
 fig_B.update_layout(
@@ -349,7 +358,11 @@ title={
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
-        'yanchor': 'top'},xaxis_title_text='Annualized Risk ($)', # xaxis label
+        'yanchor': 'top'},xaxis=dict(
+        title="Annualized Risk ($)",  
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    ), # xaxis label
     yaxis_title_text='Probability (%)',)
 
 
@@ -366,7 +379,11 @@ title={
         'y':0.9,
         'x':0.5,
         'xanchor': 'center',
-        'yanchor': 'top'},xaxis_title_text='Annualized Risk ($)', # xaxis label
+        'yanchor': 'top'},xaxis=dict(
+          
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    ), # xaxis label
     yaxis_title_text='Loss Value ($)',)
 
 
