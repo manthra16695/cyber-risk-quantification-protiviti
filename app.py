@@ -133,7 +133,7 @@ fig_Cost = go.Figure([go.Bar(x=risk, y=[meda, medb, diff],marker_color='rgb(55, 
 fig = go.Figure()
 fig0=go.Figure()
 fig1 = make_subplots()
-fig2 = go.Figure()
+# fig2 = go.Figure()
 
 fig3=go.Figure()    
 fig4=go.Figure()
@@ -175,8 +175,14 @@ title={
             opacity=0.5,
             layer="below",
             line_width=0,
-        )],xaxis_title_text='Annualized Risk ($)', # xaxis label
-    yaxis_title_text='Simulation Distribution'
+        )],
+        # xaxis_title_text='Annualized Risk ($)', # xaxis label
+    yaxis_title_text='Simulation Distribution',
+    xaxis=dict(
+        title="price",  
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    )
      ,plot_bgcolor='white'
     )
 
@@ -205,19 +211,62 @@ fig0.update_layout(title={
     yaxis_title_text='Probability %',plot_bgcolor='white'
 )
 
-fig1.update_layout(title_text='<b>What are our Top Risks?</b>',xaxis_title_text='Risk Types', # xaxis label
+fig1.update_layout(title={
+        'text': "What are our Top Risks ?",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'},xaxis_title_text='Risk Types', # xaxis label
     yaxis_title_text='Loss Value ($)', # yaxis label
+    plot_bgcolor='white'
 )
-fig2.update_layout(title_text='<b>BoxPlot Comparison of Annualized Loss and Primary Response</b>',
-    yaxis_title_text='Loss Due to Risk ($)', # yaxis label
-)
+fig1.add_annotation(x=3,y=40000,
+            text="<b><i>Top Risks and its Expected loss value based on 50th Percentile values</i></b>",
+            showarrow=False,
+            yshift=10,font=dict(
+            family="Courier New, monospace",
+            size=16,
+            color="#ffffff"
+            ),
+        align="center",
+        arrowhead=2,
+        arrowsize=1,
+        arrowwidth=2,
+        arrowcolor="#636363",
+        ax=20,
+        ay=-30,
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="#ff7f0e",
+        opacity=0.8)
+        
 
-fig3.update_layout(title_text='<b>Secondary Response Comparisons</b>',xaxis_title_text='Dollar Value ($)', # xaxis label
-    yaxis_title_text='Number of Occurences', # yaxis label
+
+# fig2.update_layout(title_text='<b>BoxPlot Comparison of Annualized Loss and Primary Response</b>',
+#     yaxis_title_text='Loss Due to Risk ($)', # yaxis label
+# )
+
+fig3.update_layout(title={
+        'text': 'Secondary Response Comparisons',
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'},
+    yaxis=dict(
+        title="Number of Occurences",  
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    ),xaxis=dict(
+        title="Dollar Value ($)",  
+        linecolor="#BCCCDC",  # Sets color of Y-axis line
+        showgrid=False,  # Removes Y-axis grid lines    
+    ),
+    plot_bgcolor='white' # yaxis label
 )
 
 fig4.update_layout(title_text='<b>Histogram Comparison of Seconday Responses</b>',xaxis_title_text='Loss Due to Risk ($)',
-    yaxis_title_text='Number of Occurences', # yaxis label
+    yaxis_title_text='Number of Occurences',  plot_bgcolor='white'# yaxis label
 )
 
 fig5.update_layout(title_text='<b>Correlation Between Loss Frequency and Annualized Loss</b>',xaxis_title_text='Loss Event Frequency', # xaxis label
@@ -363,7 +412,7 @@ fig.add_shape(
         go.layout.Shape(type='line', xref='x',
                         x0=loss_ML, y0=0,x1=loss_ML,y1=650, line=dict(
         color="red",
-        width=2
+        width=2,
     ))
 )
 fig.add_shape(
@@ -575,10 +624,11 @@ fig0.add_annotation(
 fig1.add_trace(go.Bar(x=["Primary Response ($)","Annualized Risk","Reputation","Secondary Response","Fines and Judgements"],y=[df["Primary Response ($)"].median(),df["Annualized Risk ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median()  ],marker_color='rgb(55, 83, 109)',text=[df["Primary Response ($)"].median(),df["Annualized Risk ($)"].median(),df["Reputation ($)"].median(),df["Secondary Response ($)"].median() ,df["Fines and Judgements ($)"].median() ],textposition='auto'),
               row=1, col=1)
 
+
 ##fig1 Ends
 ##fig2 Begins
-fig2.add_trace(go.Box(y=df["Annualized Risk ($)"],name='Annualized Risk'))
-fig2.add_trace(go.Box(y=df["Primary Response ($)"],name='Primary Response'))
+# fig2.add_trace(go.Box(y=df["Annualized Risk ($)"],name='Annualized Risk'))
+# fig2.add_trace(go.Box(y=df["Primary Response ($)"],name='Primary Response'))
 ##fig2 Ends
 ##fig3 Begins
 fig3.add_trace(go.Box(y=df["Secondary Response ($)"],name='Secondary Response'))
@@ -782,10 +832,10 @@ app.layout = html.Div([
         id='Top_Risks',
         figure=fig1
     ),
-         dcc.Graph(
-        id='BoxPrimary',
-        figure=fig2
-    ),
+    #      dcc.Graph(
+    #     id='BoxPrimary',
+    #     figure=fig2
+    # ),
          dcc.Graph(
         id='Boxsecondary',
         figure=fig3
