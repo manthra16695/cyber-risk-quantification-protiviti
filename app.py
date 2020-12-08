@@ -294,8 +294,14 @@ fig4.update_layout(title={
 )
 
 
-fig5.update_layout(title_text='<b>Correlation Between Loss Frequency and Annualized Loss</b>',xaxis_title_text='Loss Event Frequency', # xaxis label
-    yaxis_title_text='Annualized Risk ($)', plot_bgcolor='white'# yaxis label
+fig5.update_layout(xaxis_title_text='Loss Event Frequency', # xaxis label
+    yaxis_title_text='Annualized Risk ($)', plot_bgcolor='white',# yaxis label
+    title={
+        'text': "Correlation Between Loss Frequency and Annualized Loss",
+        'y':0.9,
+        'x':0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'}
 )
 fig4.add_annotation(x=1200,y=750,
             text="Reputation losses have a wide spread compared to other secondary losses",
