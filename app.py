@@ -293,8 +293,37 @@ fig4.update_layout(title={
     yaxis_title_text='Number of Occurences',  plot_bgcolor='white'# yaxis label
 )
 
+
 fig5.update_layout(title_text='<b>Correlation Between Loss Frequency and Annualized Loss</b>',xaxis_title_text='Loss Event Frequency', # xaxis label
-    yaxis_title_text='Annualized Risk ($)', # yaxis label
+    yaxis_title_text='Annualized Risk ($)', plot_bgcolor='white'# yaxis label
+)
+fig4.add_annotation(x=1200,y=750,
+            text="Reputation losses have a wide spread compared to other secondary losses",
+            showarrow=False,
+            yshift=10,font=dict(
+            family="Courier New, monospace",
+            size=16,
+            color="#ffffff"
+            ),
+        align="center",
+        arrowhead=2,
+        arrowsize=1,
+        arrowwidth=2,
+        arrowcolor="#636363",
+        ax=20,
+        ay=-30,
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="#ff7f0e",
+        opacity=0.8)
+fig4.add_annotation(
+    x=1200,
+    y=600,
+    text='<b><i>Reputation Losses are destructive, which could hamper the capability of doing business</i></b>',
+    ax=0.5,
+    ay=2,
+    arrowhead=2,
 )
 
 fig6.update_layout(title_text='<b>Approach A Distribution</b>',xaxis_title_text='Loss Value ($)', # xaxis label
@@ -893,14 +922,11 @@ app.layout = html.Div([
         id='Approach',
         figure=fig0
     ),
-       dcc.Graph(
-        id='cost',
-        figure=fig_Cost
-    ),
-        dcc.Graph(
-        id='table',
-        figure=fig_table
-    ),
+    #    dcc.Graph(
+    #     id='cost',
+    #     figure=fig_Cost
+    # ),
+
        dcc.Graph(
         id='Top_Risks',
         figure=fig1
@@ -916,6 +942,10 @@ app.layout = html.Div([
     dcc.Graph(
         id='Distribution',
         figure=fig4
+    ),
+        dcc.Graph(
+        id='table',
+        figure=fig_table
     ),
     dcc.Graph(
         id='Correlation',
