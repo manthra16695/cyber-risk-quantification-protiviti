@@ -32,7 +32,8 @@ df1=pd.read_csv(r"./Data_Files/Comparison Analysis Outputs.csv")
 
 ##Mean and Percentile value Calculation for Stick Lines
 Annualized_loss=df['Annualized Risk ($)']
-loss_ML=statistics.mode(Annualized_loss)
+# loss_ML=statistics.mode(Annualized_loss) 
+loss_ML=32000 ##Hard coding here since Mode Calculation is wrong in the previous line due to binning and decimals.
 dflen=len(Annualized_loss) ## For Y axis co-ordinate
 
 
@@ -272,13 +273,7 @@ fig5.update_layout(xaxis_title_text='Loss Event Frequency', # xaxis label
 fig.add_trace(go.Histogram(x=df['Annualized Risk ($)']))
 
 ##Plotting the Percentile Sticks using calculated Co-ordinates
-fig.add_shape( ##Mode Line
-        go.layout.Shape(type='line', xref='x',
-                        x0=loss_ML, y0=0,x1=loss_ML,y1=650, line=dict(
-        color="red",
-        width=2,
-    ))
-)
+
 fig.add_shape(
         go.layout.Shape(type='line', xref='x',
                         x0=loss_90th, y0=0,x1=loss_90th,y1=650, line=dict(
@@ -301,6 +296,14 @@ fig.add_shape(
         width=1,
     ))
 )
+fig.add_shape( ##Mode Line
+        go.layout.Shape(type='line', xref='x',
+                        x0=loss_ML, y0=0,x1=loss_ML,y1=650, line=dict(
+        color="red",
+        width=2,
+    ))
+)
+
 fig.add_annotation(x=loss_50th,y=650,
             text="50th",
             showarrow=False,
