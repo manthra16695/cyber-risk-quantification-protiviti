@@ -456,7 +456,7 @@ fig1.add_trace(go.Bar(x=["Primary Response ($)","Reputation","Secondary Response
               row=1, col=1)
 
 fig1.add_annotation(x=2,y=40000,
-            text="<b><i>Top Risks and its Expected loss value based on 50th Percentile values</i></b>",
+            text="<b>Top Risks and its Expected loss value based on 50th Percentile values</b>",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
