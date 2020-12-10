@@ -533,7 +533,7 @@ fig4.add_trace(go.Histogram(x=df['Secondary Response ($)'], name='Secondary Resp
 fig4.add_trace(go.Histogram(x=df['Fines and Judgements ($)'], name='Fines and Judgements'))
 fig4.add_trace(go.Histogram(x=df['Reputation ($)'], name='Reputation'))
 fig4.add_annotation(x=1200,y=750,
-            text="Reputation losses have a wide spread compared to other secondary losses",
+            text="Reputation loss is widely distributed compared to other secondary losses",
             showarrow=False,
             yshift=10,font=dict(
             family="Courier New, monospace",
